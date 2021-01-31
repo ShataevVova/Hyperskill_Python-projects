@@ -1,1 +1,1 @@
-# Hyperskill_Pyton
+# Hyperskill_Python
