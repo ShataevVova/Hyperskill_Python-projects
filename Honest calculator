@@ -1,0 +1,124 @@
+def is_one_digit(v):
+    if -10 < v < 10 and v.is_integer():
+        return True
+    else:
+        return False
+
+
+def check(v1, v2, v3):
+    msg_6 = " ... lazy"
+    msg_7 = " ... very lazy"
+    msg_8 = " ... very, very lazy"
+    msg_9 = "You are"
+    msg = ""
+    if is_one_digit(v1) and is_one_digit(v2):
+        msg = msg + msg_6
+    if (v1 == 1 or v2 == 1) and v3 == "*" :
+        msg = msg + msg_7
+    if (v1 == 0 or v2 == 0) and (v3 == "*" or v3 == "+" or v3 == "-"):
+        msg = msg + msg_8
+    if msg != "":
+        msg = msg_9 + msg
+    print(msg)
+
+# parse and get numbers
+
+
+def parse_input():
+    global memory
+    arguments = []
+    oper = None
+    x = y = 0
+    sentense = input().split()
+    args = (sentense[0], sentense[2])
+    args_num = []
+    for i in args:
+        if i.isalpha():
+            if i == "M":
+                i = memory
+                args_num.append(i)
+        else:
+            args_num.append(i)
+    if len(args_num) > 1:
+        x, y = [float(i) for i in args_num]
+    else:
+        print("Do you even know what numbers are? Stay focused!")
+        return False
+    
+    if sentense[1] not in "+-*/":
+            print("Yes ... an interesting math operation. You've slept through all classes, haven't you?")
+    else:
+        oper = sentense[1]
+        check(x, y, oper)
+    if oper == "+":
+        return float(x + y)
+    elif oper == "-":
+        return float(x - y)
+    elif oper == "*":
+        return float(x * y)
+    elif oper == "/":
+        if y != 0:
+            return float(x / y)
+        else:
+            print("Yeah... division by zero. Smart move...")
+            return 'dbz'
+
+        
+# MAIN Programm
+
+last_messages = {
+                    'msg_10' : "Are you sure? It is only one digit! (y / n)",
+
+                    'msg_11' : "Don't be silly! It's just one number! Add to the memory? (y / n)",
+
+                    'msg_12' : "Last chance! Do you really want to embarrass yourself? (y / n)"
+                }
+run = True
+memory = 0
+store = True
+while run:
+    print("Enter an equation")
+    result = parse_input()
+    
+    if result != 0.0 and result != 'dbz':
+        print(result)
+    elif result == 0.0:
+        result = True
+        print('0.0')
+    elif result == False or result == 'dbz':
+        continue
+   
+    while store == True:
+        print("Do you want to store the result? (y / n):")
+        answer = input()
+        if answer == "y":
+            if is_one_digit(result):
+                msg_index = 10
+                while True:
+                    print(last_messages["msg_" + str(msg_index)])
+                    answer_msg10 = input()
+                    if answer_msg10 == "y":
+                        if msg_index < 12:
+                            msg_index = msg_index + 1
+                            continue
+                        else:
+                            memory = result
+                            break
+                    elif answer_msg10 == "n":
+                        break
+                break
+            else:
+                memory = result
+                break
+        elif answer == "n":
+            break
+        else:
+            cond = True
+    while True:
+        print("Do you want to continue calculations? (y / n):")
+        answer_2 = input()
+        if answer_2 == "y":
+            break
+        elif answer_2 == "n":
+            run = False
+            break
